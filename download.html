@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>下载安装 · 创新创业学院</title>
+<style>
+:root{
+  --ink:#0f172a; --ink2:#5b6478; --ink3:#9aa3b5;
+  --line:#e8eaf2; --brand:#5b5bd6;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(760px 420px at 15% -10%, #e2e5ff 0%, rgba(226,229,255,0) 62%),
+    radial-gradient(620px 420px at 94% 108%, #ffe7dd 0%, rgba(255,231,221,0) 58%),
+    #f2f4f9;
+  display:flex;justify-content:center;padding:36px 18px 48px;
+}
+.wrap{width:100%;max-width:420px}
+.logo{width:78px;height:78px;display:block;margin:0 auto 14px;border-radius:20px;
+  box-shadow:0 12px 26px -14px rgba(15,23,42,.5)}
+h1{font-size:21px;text-align:center;margin:0 0 6px;letter-spacing:-.02em}
+.sub{text-align:center;font-size:12px;color:var(--ink3);margin:0 0 24px}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:52px;
+  border-radius:15px;font-size:15px;font-weight:600;text-decoration:none;transition:.16s;margin-bottom:10px}
+.btn.primary{background:linear-gradient(140deg,#6366f1,#8b5cf6);color:#fff;
+  box-shadow:0 16px 30px -14px rgba(99,102,241,.9)}
+.btn.primary:active{transform:scale(.985)}
+.btn.ghost{background:#fff;color:var(--ink2);border:1px solid var(--line)}
+.btn.disabled{opacity:.45;pointer-events:none}
+.meta{text-align:center;font-size:11px;color:var(--ink3);margin:0 0 18px;min-height:16px}
+
+.warn{display:none;background:#fffbea;border:1px solid #ffe6a3;border-radius:12px;
+  padding:11px 14px;font-size:11.5px;line-height:1.7;color:#7a5a12;margin-bottom:16px}
+.warn.on{display:block}
+.warn b{color:#b45309}
+
+h2{font-size:13px;margin:26px 0 10px;letter-spacing:.02em;color:var(--ink)}
+ol{margin:0;padding-left:20px;font-size:12.5px;line-height:2;color:var(--ink2)}
+ol b{color:var(--ink)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+.card p{margin:0;font-size:12px;line-height:1.8;color:var(--ink2)}
+.card p+p{margin-top:6px}
+.tag{display:inline-block;font-size:10px;background:#eef0fe;color:#4f46e5;
+  padding:2px 8px;border-radius:99px;margin-right:5px}
+.foot{margin-top:26px;text-align:center;font-size:10.5px;color:var(--ink3);line-height:1.9}
+.foot a{color:var(--brand);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <img class="logo" src="icon-192.png" alt="应用图标">
+  <h1>创新创业学院</h1>
+  <p class="sub">协会社区 · 安卓安装包</p>
+
+  <div class="warn" id="warn">
+    你正在<b>微信</b>里打开。微信无法下载安装包 —— 请点右上角 <b>···</b> → <b>在浏览器中打开</b>。
+  </div>
+
+  <a class="btn primary" id="apkBtn" href="iea-app.apk" download>⬇ 下载安卓安装包</a>
+  <div class="meta" id="apkMeta">正在检查安装包…</div>
+
+  <a class="btn ghost" href="./index.html">直接用网页版（免安装）</a>
+
+  <h2>安装步骤</h2>
+  <ol>
+    <li>点上面的按钮，下载 <b>.apk</b> 文件</li>
+    <li>打开下载好的文件，系统提示「未知来源」时点 <b>允许</b></li>
+    <li>点「安装」，装好后桌面会出现图标</li>
+  </ol>
+
+  <h2>装不上怎么办</h2>
+  <div class="card">
+    <p><span class="tag">方案一</span>用网页版，一样能看成果、发帖、找队友。</p>
+    <p><span class="tag">方案二</span>用 Chrome / Edge 打开网页版，选「添加到主屏幕」，也能有图标。</p>
+    <p><span class="tag">方案三</span>检查手机设置里是否禁止了「安装未知应用」。</p>
+  </div>
+
+  <div class="foot">
+    当前版本 1.0.0 · 安装包如有更新会在此页提示<br>
+    <a href="./index.html">返回社区首页</a>
+  </div>
+</div>
+
+<script>
+(function () {
+  // 微信 / QQ 内置浏览器提示
+  var ua = navigator.userAgent || '';
+  if (/MicroMessenger|QQ\//i.test(ua)) {
+    document.getElementById('warn').classList.add('on');
+  }
+
+  // 检查安装包是否存在：不存在就置灰，避免点了 404
+  var btn = document.getElementById('apkBtn');
+  var meta = document.getElementById('apkMeta');
+
+  fetch('iea-app.apk', { method: 'HEAD' })
+    .then(function (r) {
+      if (!r.ok) throw new Error('404');
+      var len = r.headers.get('content-length');
+      meta.textContent = '版本 1.0.0 · ' +
+        (len ? (Number(len) / 1048576).toFixed(1) + ' MB' : '大小未知') + ' · 适用于 Android 8 以上';
+    })
+    .catch(function () {
+      btn.classList.add('disabled');
+      btn.removeAttribute('href');
+      btn.removeAttribute('download');
+      meta.textContent = '安装包还在打包中，先用网页版吧';
+    });
+})();
+</script>
+</body>
+</html>
